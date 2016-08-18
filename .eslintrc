@@ -1,0 +1,28 @@
+{
+    "extends": "standard",
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            1,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "semi": [
+            1,
+            "always"
+        ],
+        "no-new":[
+            0
+        ]
+    }
+}
