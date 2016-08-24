@@ -4,14 +4,25 @@
 
 import Bue from '../src/index';
 
-new Bue({
+const app = new Bue({
     el: '#app',
     data: {
         name: 'youngwind',
         age: 24,
         address: {
-            city: '北京'
-        }
+            info: {
+                city: "beijing"
+            }
+        },
+        message: ['a', 'b', 'c']
     }
 });
+
+
+app.$watch('name', function (val) {
+    console.log('我watch住了name');
+    console.log(`新的name为${val}`)
+});
+
+window.app = app;
 
