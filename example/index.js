@@ -24,5 +24,10 @@ app.$watch('name', function (val) {
     console.log(`新的name为${val}`)
 });
 
+app.$watch('address.info.city', function (val) {
+    console.log('我watch住了city');
+    console.log(`新的city为${val}`)
+});
+
 window.app = app;
 
