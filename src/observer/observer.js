@@ -11,20 +11,23 @@ const OBJECT = 1;
 /**
  * 观察者构造函数
  * @param value {Object} 数据对象
+ * @param type {Int} 数据对象的类型(分为对象和数组)
  * @constructor
  */
 function Observer(value, type) {
     this.value = value;
-    // TODO 这里为什么enumerable一定要为false,否则会触发死循环
-    // value.$observer = this;
+
+    // TODO 这里enumerable一定要为false,否则会触发死循环, 原因未明
+    // 将当前对象存储到当前对象的$observer属性中
     Object.defineProperty(value, '$observer', {
         value: this,
         enumerable: false,
         writable: true,
         configurable: true
     });
+
     if (type === ARRAY) {
-        value.__proto__ = arrayAugmentations;
+        value.__proto__ = arrayAugmentations;  // eslint-disable-line
         this.link(value);
     } else if (type === OBJECT) {
         this.walk(value);
@@ -46,10 +49,8 @@ Observer.prototype.walk = function (obj) {
         this.observe(key, val);
 
         this.convert(key, val);
-
     }
 };
-
 
 /**
  * 定义对象属性
@@ -62,33 +63,44 @@ Observer.prototype.convert = function (key, val) {
         enumerable: true,
         configurable: true,
         get: function () {
-            console.log('你访问了' + key);
-            return val
+            return val;
         },
         set: function (newVal) {
             if (newVal === val) return;
-            val = newVal
+            val = newVal;
             console.log('你设置了' + key + ' 新的' + key + ' = ' + newVal);
-            // ob.trigger.call(ob, 'set');
             ob.notify('set', key, newVal);
-            ob.notify(`set:${key}`, key, newVal)
+            ob.notify(`set:${key}`, key, newVal);
         }
-    })
+    });
 };
 
-
+/**
+ * 调用创建observer函数
+ * 并且判断是否有父节点,如果有,则存储父节点到自身,
+ * 目的是为了方便后面事件传播使用
+ * @param key {string} 键值
+ * @param val {Any} 属性值
+ */
 Observer.prototype.observe = function (key, val) {
     let ob = Observer.create(val);
     if (!ob) return;
     ob.parent = {
         key,
         ob: this
-    }
-
+    };
 };
 
-Observer.prototype.link = function () {
-
+/**
+ * 这个方法是用来处理如下情况: var ary = [1,{name:liangshaofeng}]
+ * 也就是说,当数组的某些项是一个对象的时候,
+ * 那么需要给这个对象创建observer监听它
+ * @param items {Array} 待处理数组
+ */
+Observer.prototype.link = function (items) {
+    items.forEach((value, index) => {
+        this.observe(index, value);
+    });
 };
 
 /**
@@ -100,16 +112,17 @@ Observer.prototype.link = function () {
 Observer.prototype.on = function (event, fn) {
     this._cbs = this._cbs || {};
     if (!this._cbs[event]) {
-        this._cbs[event] = []
+        this._cbs[event] = [];
     }
     this._cbs[event].push(fn);
 
-    // 级联调用
+    // 这里return this是为了实现.on(...).on(...)这样的级联调用
     return this;
 };
 
 /**
  * 触发消息, 并且将消息逐层往上传播
+ *
  */
 Observer.prototype.notify = function (event, path, val) {
     this.emit(event, path, val);
@@ -121,20 +134,26 @@ Observer.prototype.notify = function (event, path, val) {
 
 /**
  * 触发执行回调函数
+ * @param event {string} 事件类型
+ * @param event {path} 事件触发路径
+ *
  */
 Observer.prototype.emit = function (event, path, val) {
     this._cbs = this._cbs || {};
-    let callbacks = this._cbs[event]
-
+    let callbacks = this._cbs[event];
     if (!callbacks) return;
-
     callbacks = callbacks.slice(0);
     callbacks.forEach((cb, i) => {
-        callbacks[i].apply(this, arguments)
+        callbacks[i].apply(this, arguments);
     });
 };
 
-Observer.create = function (value, options) {
+/**
+ * 根据不同的数据类型,调用observer构造函数
+ * @param value {Any} 数据
+ * @returns {Observer}
+ */
+Observer.create = function (value) {
     if (Array.isArray(value)) {
         return new Observer(value, ARRAY);
     } else if (typeof value === 'object') {

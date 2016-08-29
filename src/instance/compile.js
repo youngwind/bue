@@ -5,7 +5,7 @@
 exports._compile = function () {
     this.fragment = document.createDocumentFragment();
     this._compileNode(this.$template);
-    this.$el.innerHTML = "";
+    this.$el.innerHTML = '';
     this.fragment.childNodes.forEach((child) => {
         this.$el.appendChild(child.cloneNode(true));
     });
@@ -24,7 +24,6 @@ exports._compileText = function (node) {
     let nodeValue = node.nodeValue;
 
     if (nodeValue === '') return;
-
 
     let patt = /{{\w+}}/g;
     let ret = nodeValue.match(patt);
