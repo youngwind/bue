@@ -4,6 +4,7 @@
  */
 
 import arrayAugmentations from '../observer/array-augmentations';
+import objectAugmentations from '../observer/object-augmentations';
 
 const ARRAY = 0;
 const OBJECT = 1;
@@ -30,6 +31,7 @@ function Observer(value, type) {
         value.__proto__ = arrayAugmentations;  // eslint-disable-line
         this.link(value);
     } else if (type === OBJECT) {
+        value.__proto__ = objectAugmentations;  // eslint-disable-line
         this.walk(value);
     }
 }
