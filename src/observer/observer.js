@@ -123,6 +123,41 @@ Observer.prototype.on = function (event, fn) {
 };
 
 /**
+ * 取消订阅事件
+ * @param event {string} 事件类型
+ * @param fn {Function} 回调函数
+ * @returns {Observer} 观察者对象
+ */
+Observer.prototype.off = function (event, fn) {
+    this._cbs = this._cbs || {};
+
+    // 取消所有订阅事件
+    if (!arguments.length) {
+        this._cbs = {};
+        return this;
+    }
+
+    let callbacks = this._cbs[event];
+    if (!callbacks) return this;
+
+    // 取消特定事件
+    if (arguments.length === 1) {
+        delete this._cbs[event];
+        return this;
+    }
+
+    // 取消特定事件的特定回调函数
+    for (let i = 0, cb; i < callbacks.length; i++) {
+        cb = callbacks[i];
+        if(cb === fn) {
+            callbacks.splice(i,1);
+            break;
+        }
+    }
+    return this;
+};
+
+/**
  * 触发消息, 并且将消息逐层往上传播
  *
  */
