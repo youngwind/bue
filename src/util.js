@@ -15,5 +15,5 @@ exports.define = function (obj, key, val, enumerable) {
         enumerable: !!enumerable,
         writable: true,
         configurable: true
-    })
+    });
 };

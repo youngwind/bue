@@ -21,15 +21,11 @@ const app = new Bue({
     }
 });
 
-app.$watch('name', function (val) {
-    console.log('我watch住了name');
-    console.log(`新的name为${val}`);
-});
-
-app.$watch('address.info.city', function (val) {
-    console.log('我watch住了city');
-    console.log(`新的city为${val}`);
-});
+app.test = function () {
+    this.$data.name = 'liangshaofeng';
+    this.$data.age = 100;
+    this.$data.name = 'liangshaofeng222';
+};
 
 window.app = app;
 

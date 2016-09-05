@@ -9,6 +9,8 @@ import objectAugmentations from '../observer/object-augmentations';
 const ARRAY = 0;
 const OBJECT = 1;
 
+let uid = 0;
+
 /**
  * 观察者构造函数
  * @param value {Object} 数据对象
@@ -17,6 +19,7 @@ const OBJECT = 1;
  */
 function Observer(value, type) {
     this.value = value;
+    this.id = ++uid;
 
     // TODO 这里enumerable一定要为false,否则会触发死循环, 原因未明
     // 将当前对象存储到当前对象的$observer属性中
@@ -70,7 +73,6 @@ Observer.prototype.convert = function (key, val) {
         set: function (newVal) {
             if (newVal === val) return;
             val = newVal;
-            console.log('你设置了' + key + ' 新的' + key + ' = ' + newVal);
             ob.notify('set', key, newVal);
             ob.notify(`set:${key}`, key, newVal);
         }
@@ -149,8 +151,8 @@ Observer.prototype.off = function (event, fn) {
     // 取消特定事件的特定回调函数
     for (let i = 0, cb; i < callbacks.length; i++) {
         cb = callbacks[i];
-        if(cb === fn) {
-            callbacks.splice(i,1);
+        if (cb === fn) {
+            callbacks.splice(i, 1);
             break;
         }
     }
