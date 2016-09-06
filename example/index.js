@@ -26,9 +26,8 @@ const app = new Bue({
 });
 
 app.test = function () {
-    this.$data.name = 'liangshaofeng';
-    this.$data.age = 100;
-    this.$data.name = 'liangshaofeng222';
+    this.$data.user.name = "liangshaofeng";
+    this.$data.user.age = 100;
 };
 
 window.app = app;

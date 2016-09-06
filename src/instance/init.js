@@ -7,6 +7,7 @@ exports._init = function (options) {
     // 其他初始化
 
     this.$options = options;
+    this.$options.directives = require('../directives');
     this.$data = options.data;
     this.$el = document.querySelector(options.el);
     this.$template = this.$el.cloneNode(true);

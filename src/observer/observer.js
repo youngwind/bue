@@ -168,7 +168,9 @@ Observer.prototype.notify = function (event, path, val) {
     let parent = this.parent;
     if (!parent) return;
     let ob = parent.ob;
-    ob.notify(event, path, val);
+    let key = parent.key;
+    let parentPath = `${key}.${path}`;
+    ob.notify(event, parentPath, val);
 };
 
 /**

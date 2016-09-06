@@ -6,10 +6,15 @@ function Binding() {
     this._subs = [];
 }
 
-Binding.prototype._addChild = function (key, child) {
-    child = child || new Binding();
-    this[key] = child;
-    return child;
+/**
+ * Add a child binding to the tree.
+ * @param key
+ * @param child
+ * @returns {*|Binding}
+ * @private
+ */
+Binding.prototype._addChild = function (key) {
+    return this[key] || new Binding();
 };
 
 Binding.prototype._addSub = function (sub) {
