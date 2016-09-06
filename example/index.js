@@ -17,7 +17,11 @@ const app = new Bue({
         message: ['a', 'b', {
             name: 'liangshaofeng',
             age: 24
-        }]
+        }],
+        user: {
+            name: 'youngwind',
+            age: 24
+        }
     }
 });
 

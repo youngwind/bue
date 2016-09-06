@@ -17,6 +17,10 @@ exports._init = function (options) {
 
     this.observer.on('set', this._updateBindingAt.bind(this));
 
+    this._initBindings();
+
     // 渲染挂载
-    this.$mount();
+    if (options.el) {
+        this.$mount(options.el);
+    }
 };

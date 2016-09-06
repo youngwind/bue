@@ -17,3 +17,9 @@ exports.define = function (obj, key, val, enumerable) {
         configurable: true
     });
 };
+
+exports.extend = function (to, from) {
+  for(let key in from){
+      to[key] = from[key];
+  } 
+};

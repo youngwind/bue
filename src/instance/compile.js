@@ -2,6 +2,9 @@
  * Created by youngwind on 16/8/18.
  */
 import Directive from '../directive';
+import textParser from '../parse/text';
+import dirParser from '../parse/directive';
+import _ from '../util';
 
 exports._compile = function () {
     this._compileNode(this.$el);
@@ -13,21 +16,25 @@ exports._compileElement = function (node) {
     }
 };
 
-exports._compileText = function (node) {
-    let patt = /{{\w+}}/g;
-    let nodeValue = node.nodeValue;
-    let expressions = nodeValue.match(patt);  // 这是一个数组,形如["{{name}}"];
+exports._compileTextNode = function (node) {
+    let tokens = textParser.parse(node.nodeValue);
+    if (!tokens) return;
 
-    if (!expressions) return;
-
-    expressions.forEach((expression) => {
-        let el = document.createTextNode('');
-        node.parentNode.insertBefore(el, node);
-        let property = expression.replace(/[{}]/g, '');
-        this._bindDirective('text', property, el);
+    tokens.forEach((token) => {
+        if (token.tag) {
+            // 指令节点
+            let value = token.value;
+            let el = document.createTextNode('');
+            _.before(el, node);
+            this._bindDirective('text', value, el);
+        } else {
+            // 普通文本节点
+            let el = document.createTextNode(token.value);
+            _.before(el, node);
+        }
     });
 
-    node.parentNode.removeChild(node);
+    _.remove(node);
 };
 
 exports._compileNode = function (node) {
@@ -38,16 +45,19 @@ exports._compileNode = function (node) {
             break;
         // node
         case 3 :
-            this._compileText(node);
+            this._compileTextNode(node);
             break;
         default:
             return;
     }
 };
 
-exports._bindDirective = function (name, expression, node) {
+exports._bindDirective = function (name, value, node) {
+    let descriptors = dirParser.parse(value);
     let dirs = this._directives;
-    dirs.push(
-        new Directive(name, node, this, expression)
-    );
+    descriptors.forEach((descriptor) => {
+        dirs.push(
+            new Directive(name, node, this, descriptor)
+        )
+    });
 };

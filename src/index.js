@@ -10,6 +10,7 @@ Bue.prototype = {
     constructor: Bue,
     ...require('./instance/init'),
     ...require('./instance/compile'),
+    ...require('./instance/element'),
     ...require('./api/lifecycle'),
     ...require('./api/data'),
     ...require('./instance/bindings'),
