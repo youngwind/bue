@@ -11,10 +11,15 @@ Bue.prototype = {
     ...require('./instance/init'),
     ...require('./instance/compile'),
     ...require('./instance/element'),
-    ...require('./api/lifecycle'),
-    ...require('./api/data'),
     ...require('./instance/bindings'),
-    observer: {...require('./observer/observer')}
+    ...require('./instance/scope'),
+    ...require('./api/lifecycle'),
+    ...require('./api/data')
 };
+
+Bue.options = {
+    directives: {...require('./directives')}
+};
+
 
 module.exports = Bue;

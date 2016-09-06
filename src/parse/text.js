@@ -4,7 +4,7 @@
 
 /**
  * 将文本节点如"{{user.name}}1111",解析成["{{user.name}}","1111"]两个节点
- * @param text
+ * @param text {String} 例如 "{{user.name}}1111"
  */
 exports.parse = function (text) {
     let tokens = [];

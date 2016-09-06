@@ -2,22 +2,14 @@
  * Created by youngwind on 16/8/24.
  */
 
-exports.$watch = function (key, fn) {
-    let _fn = function () {
-        fn(arguments[2]);
-    };
+import Watcher from '../watcher';
 
-    let pathAry = key.split('.');
-    if (pathAry.length === 1) {
-        this.$data.$observer.on(`set:${key}`, _fn.bind(this));
-    } else {
-        let _temp = this.$data;
-        let lastProperty = pathAry.pop();
-
-        pathAry.forEach((property) => {
-            _temp = _temp[property];
-        });
-        _temp.$observer.on(`set:${lastProperty}`, _fn.bind(this));
-    }
+/**
+ * 这就是 vm.$watch(function(){.....})那里用到的
+ * @param exp {String} 指令表达式
+ * @param cb {Function} 当指令表达式对应的数据发生改变时执行的回调函数
+ */
+exports.$watch = function (exp, cb) {
+    new Watcher(this, exp, cb, this);
 };
 

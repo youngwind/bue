@@ -18,6 +18,11 @@ exports.define = function (obj, key, val, enumerable) {
     });
 };
 
+/**
+ * 这不需要多加解释吧
+ * @param to
+ * @param from
+ */
 exports.extend = function (to, from) {
   for(let key in from){
       to[key] = from[key];

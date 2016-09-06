@@ -3,24 +3,32 @@
  * 实例初始化
  */
 
+import _ from '../util';
+
+/**
+ * 实例初始化入口
+ * @param options {Object} bue实例选项
+ * @private
+ */
 exports._init = function (options) {
-    // 其他初始化
-
     this.$options = options;
-    this.$options.directives = require('../directives');
-    this.$data = options.data;
-    this.$el = document.querySelector(options.el);
-    this.$template = this.$el.cloneNode(true);
-    this._directives = [];
 
-    // 创建观察对象
-    this.observer = this.observer.create(this.$data);
+    // Bue构造函数上定义了一些指令相关的方法,需要将它们引用过来, 以供后面的调用
+    _.extend(this.$options, this.constructor.options);
 
-    this.observer.on('set', this._updateBindingAt.bind(this));
+    this.$data = options.data || {};
 
+    // 初始化data, 主要是做Observer,数据监听这一块
+    this._initData(options.data);
+
+    // binding、watcher、directive是实现动态数据绑定的三大核心对象
+    // 三者的关系非常复杂
     this._initBindings();
 
-    // 渲染挂载
+    // 指令数组,用于存放解析DOM模板的时候生成的指令
+    this._directives = [];
+
+    // 解析DOM模板, 渲染真实的DOM
     if (options.el) {
         this.$mount(options.el);
     }

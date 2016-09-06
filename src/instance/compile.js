@@ -6,16 +6,30 @@ import textParser from '../parse/text';
 import dirParser from '../parse/directive';
 import _ from '../util';
 
+/**
+ * 整体思路: 利用递归的思想
+ */
+
 exports._compile = function () {
     this._compileNode(this.$el);
 };
 
+/**
+ * 渲染节点
+ * @param node {Element}
+ * @private
+ */
 exports._compileElement = function (node) {
     if (node.hasChildNodes()) {
         Array.from(node.childNodes).forEach(this._compileNode, this);
     }
 };
 
+/**
+ * 渲染文本节点
+ * @param node {Element}
+ * @private
+ */
 exports._compileTextNode = function (node) {
     let tokens = textParser.parse(node.nodeValue);
     if (!tokens) return;
@@ -52,6 +66,13 @@ exports._compileNode = function (node) {
     }
 };
 
+/**
+ * 生成指令
+ * @param name {string} 'text' 代表是文本节点
+ * @param value {string} 例如: user.name  是表示式
+ * @param node {Element} 指令对应的el
+ * @private
+ */
 exports._bindDirective = function (name, value, node) {
     let descriptors = dirParser.parse(value);
     let dirs = this._directives;
