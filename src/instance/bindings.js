@@ -19,7 +19,7 @@ exports._updateBindingAt = function () {
     });
     let subs = r._subs;
     subs.forEach((watcher) => {
-        watcher.cb.call(watcher);
+        watcher.cb();
     });
 };
 

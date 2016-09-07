@@ -7,9 +7,9 @@
  * @param text {String} 例如 "{{user.name}}1111"
  */
 exports.parse = function (text) {
-    let tokens = [];
-    let tagRE = /\{?\{\{(.+?)\}\}\}?/g;
-    let match, index, value, lastIndex = 0;
+    let tokens = [],
+        tagRE = /\{?\{\{(.+?)\}\}\}?/g,
+        match, index, value, lastIndex = 0;
     while (match = tagRE.exec(text)) {
         index = match.index;
         if (index > lastIndex) {

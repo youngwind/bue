@@ -22,7 +22,6 @@ exports._init = function (options) {
     this._initData(options.data);
 
     // binding、watcher、directive是实现动态数据绑定的三大核心对象
-    // 三者的关系非常复杂
     this._initBindings();
 
     // 指令数组,用于存放解析DOM模板的时候生成的指令

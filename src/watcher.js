@@ -2,6 +2,11 @@
  * Created by youngwind on 16/9/5.
  */
 
+import Batcher from './batcher';
+
+let uid = 0;
+let batcher = new Batcher();
+
 /**
  * Watcher构造函数
  * 有什么用呢这个东西?两个用途
@@ -14,6 +19,7 @@
  * @constructor
  */
 function Watcher(vm, expression, cb, ctx) {
+    this.id = ++uid;
     this.vm = vm;
     this.expression = expression;
     this.cb = cb;
@@ -47,7 +53,8 @@ Watcher.prototype.addDep = function (path) {
  * 就是这么的。。复杂。。
  */
 Watcher.prototype.update = function () {
-    this.cb.call(this.ctx, arguments);
+    // this.cb.call(this.ctx, arguments);
+    batcher.push(this);
 };
 
 module.exports = Watcher;

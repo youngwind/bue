@@ -21,5 +21,4 @@ Bue.options = {
     directives: {...require('./directives')}
 };
 
-
 module.exports = Bue;

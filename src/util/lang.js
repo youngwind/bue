@@ -24,7 +24,7 @@ exports.define = function (obj, key, val, enumerable) {
  * @param from
  */
 exports.extend = function (to, from) {
-  for(let key in from){
-      to[key] = from[key];
-  } 
+    for (let key in from) {
+        to[key] = from[key];
+    }
 };

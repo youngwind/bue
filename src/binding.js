@@ -25,7 +25,7 @@ Binding.prototype._addChild = function (key) {
 /**
  * 这个就是把watcher塞到_subs数组里面啦
  * 之后触发update的话,是会遍历这个数组滴
- * @param sub {Watcher} 
+ * @param sub {Watcher} 观察容器
  * @private
  */
 Binding.prototype._addSub = function (sub) {

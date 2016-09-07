@@ -8,7 +8,7 @@
  * @param target {Element}
  */
 exports.before = function (el, target) {
-  target.parentNode.insertBefore(el, target);
+    target.parentNode.insertBefore(el, target);
 };
 
 /**
@@ -16,5 +16,5 @@ exports.before = function (el, target) {
  * @param el {Element}
  */
 exports.remove = function (el) {
-  el.parentNode.removeChild(el);
+    el.parentNode.removeChild(el);
 };

@@ -37,7 +37,7 @@ Directive.prototype._bind = function () {
         this.vm,
         this.expression,
         this._update,  // 回调函数,目前是唯一的,就是更新DOM
-        this,           // 上下文
+        this           // 上下文
     );
 
     this.update();

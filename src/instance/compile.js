@@ -79,6 +79,6 @@ exports._bindDirective = function (name, value, node) {
     descriptors.forEach((descriptor) => {
         dirs.push(
             new Directive(name, node, this, descriptor)
-        )
+        );
     });
 };

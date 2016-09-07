@@ -26,6 +26,13 @@
         ],
         "space-before-function-paren":[
             0
+        ],
+        "one-var": [
+            0
+        ],
+        "no-cond-assign":[
+            0
         ]
+
     }
 }
