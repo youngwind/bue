@@ -11,6 +11,11 @@ import _ from '../util';
  * @private
  */
 exports._init = function (options) {
+
+    // 这个变量是用来存储遍历DOM过程中生成的当前的Watcher
+    // 在实现computed功能的时候需要用到
+    this._activeWatcher = null;
+
     this.$options = options;
 
     // Bue构造函数上定义了一些指令相关的方法,需要将它们引用过来, 以供后面的调用
@@ -20,6 +25,9 @@ exports._init = function (options) {
 
     // 初始化data, 主要是做Observer,数据监听这一块
     this._initData(options.data);
+
+    // 初始化计算属性
+    this._initComputed();
 
     // binding、watcher、directive是实现动态数据绑定的三大核心对象
     this._initBindings();

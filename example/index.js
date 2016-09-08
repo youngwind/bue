@@ -7,20 +7,14 @@ import Bue from '../src/index';
 const app = new Bue({
     el: '#app',
     data: {
-        name: 'youngwind',
-        age: 24,
-        address: {
-            info: {
-                city: 'beijing'
-            }
-        },
-        message: ['a', 'b', {
-            name: 'liangshaofeng',
-            age: 24
-        }],
         user: {
             name: 'youngwind',
             age: 24
+        }
+    },
+    computed: {
+        info: function () {
+            return `计算出来的属性-> 姓名: ${this.user.name}, 年龄: ${this.user.age}`;
         }
     }
 });
