@@ -11,7 +11,6 @@ import _ from '../util';
  * @private
  */
 exports._init = function (options) {
-
     // 这个变量是用来存储遍历DOM过程中生成的当前的Watcher
     // 在实现computed功能的时候需要用到
     this._activeWatcher = null;

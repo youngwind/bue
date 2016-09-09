@@ -29,7 +29,26 @@ exports._updateBindingAt = function () {
  */
 exports._initBindings = function () {
     this._rootBinding = new Binding();
-    this.observer.on('set', this._updateBindingAt.bind(this));
+    this.observer.on('set', this._updateBindingAt.bind(this))
+        .on('get', this._collectDep.bind(this));
+};
+
+/**
+ * 根据给出的路径获取binding
+ * 如果有,则返回该binding;如果没有,则返回false
+ * @param path {String} 例如: "user.name"
+ * @returns {boolean|Binding}
+ * @private
+ */
+exports._getBindingAt = function (path) {
+    let b = this._rootBinding;
+    let pathAry = path.split('.');
+    for (let i = 0; i < pathAry.length; i++) {
+        let key = pathAry[i];
+        b = b[key];
+        if (!b) return false;
+    }
+    return b;
 };
 
 /**
@@ -47,4 +66,20 @@ exports._createBindingAt = function (path) {
         b = b[key] = b._addChild(key);
     }
     return b;
+};
+
+/**
+ * 收集依赖。
+ * 为什么需要这个东西呢?
+ * 因为在实现computed计算属性功能的过程中,
+ * 发现程序需要知晓计算出来的属性到底依赖于哪些原先就有的属性
+ * 这样才能做到在对应原有的属性的_subs数组中添加新属性指令的watcher事件
+ * @param path {String} get事件传播到顶层时的路径,比如"user.name"
+ * @private
+ */
+exports._collectDep = function (event, path) {
+    let watcher = this._activeWatcher;
+    if (watcher) {
+        watcher.addDep(path);
+    }
 };

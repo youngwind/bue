@@ -11,6 +11,8 @@ const OBJECT = 1;
 
 let uid = 0;
 
+Observer.emitGet = false;
+
 /**
  * 观察者构造函数
  * @param value {Object} 数据对象
@@ -68,13 +70,15 @@ Observer.prototype.convert = function (key, val) {
         enumerable: true,
         configurable: true,
         get: function () {
+            if (Observer.emitGet) {
+                ob.notify('get', key);
+            }
             return val;
         },
         set: function (newVal) {
             if (newVal === val) return;
             val = newVal;
             ob.notify('set', key, newVal);
-            ob.notify(`set:${key}`, key, newVal);
         }
     });
 };

@@ -3,6 +3,8 @@
  */
 
 import Batcher from './batcher';
+import expParser from './parse/expression';
+import Observer from './observer/observer';
 
 let uid = 0;
 let batcher = new Batcher();
@@ -24,18 +26,40 @@ function Watcher(vm, expression, cb, ctx) {
     this.expression = expression;
     this.cb = cb;
     this.ctx = ctx || vm;
-    this.addDep(expression);
+    this.deps = Object.create(null);
+    this.getter = expParser.compileGetter(expression);
+    this.initDeps(expression);
 }
 
 /**
+ * 要注意,这里的getter.call是完成计算属性的核心,
+ * 因为正是这里的getter.call, 执行了该计算属性的getter方法,
+ * 从而执行该计算属性所依赖的原始原型的get方法
+ * 从而发出get事件,冒泡到底层, 触发collectDep事件
+ * @param path {String} 指令表达式对应的路径, 例如: "user.name"
+ */
+Watcher.prototype.initDeps = function (path) {
+    this.addDep(path);
+    Observer.emitGet = true;
+    this.vm._activeWatcher = this;
+    this.value = this.getter.call(this.vm, this.vm.$data);
+    Observer.emitGet = false;
+    this.vm._activeWatcher = null;
+};
+
+/**
  * 这个函数不好理解。
- * 大概是: 根据给出的路径, 去创建binding对象,
- * 然后把当前的watcher对象添加到创建的binding对象上
+ * 大概是: 根据给出的路径, 去获取Binding对象。
+ * 如果该Binding对象不存在,则创建它。
+ * 然后把当前的watcher对象添加到binding对象上
  * @param path {string} 指令表达式对应的路径, 例如"user.name"
  */
 Watcher.prototype.addDep = function (path) {
     let vm = this.vm;
-    let binding = vm._createBindingAt(path);
+    let deps = this.deps;
+    if (deps[path]) return;
+    deps[path] = true;
+    let binding = vm._getBindingAt(path) || vm._createBindingAt(path);
     binding._addSub(this);
 };
 
