@@ -7,6 +7,7 @@ import Bue from '../src/index';
 const app = new Bue({
     el: '#app',
     data: {
+        show: true,
         user: {
             name: 'youngwind',
             age: 24

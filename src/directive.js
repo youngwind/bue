@@ -33,6 +33,8 @@ function Directive(name, el, vm, descriptor) {
 Directive.prototype._bind = function () {
     if (!this.expression) return;
 
+    this.bind && this.bind();
+
     this._watcher = new Watcher(
         this.vm,
         this.expression,
@@ -40,7 +42,7 @@ Directive.prototype._bind = function () {
         this           // 上下文
     );
 
-    this.update();
+    this.update(this._watcher.value);
 };
 
 /**
@@ -58,10 +60,12 @@ Directive.prototype._initDef = function () {
  * 这里就更绕了。意思是: 指令本身的更新函数, 其实是调用它自己的更新函数
  * 为什么要这样处理呢? 首先, 如果数据发生改变的话, 会调用指令的更新函数, 这没有问题
  * 但是,不同的指令类型, 所执行的更新函数是不一样的!这一点跟上面函数_initDef直接相关
+ * @param value {*} 属性变化之后新的值
+ * @param oldValue {*} 属性变化之前老的值
  * @private
  */
-Directive.prototype._update = function () {
-    this.update();
+Directive.prototype._update = function (value, oldValue) {
+    this.update(value, oldValue);
 };
 
 module.exports = Directive;

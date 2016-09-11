@@ -32,19 +32,11 @@ function Watcher(vm, expression, cb, ctx) {
 }
 
 /**
- * 要注意,这里的getter.call是完成计算属性的核心,
- * 因为正是这里的getter.call, 执行了该计算属性的getter方法,
- * 从而执行该计算属性所依赖的原始原型的get方法
- * 从而发出get事件,冒泡到底层, 触发collectDep事件
  * @param path {String} 指令表达式对应的路径, 例如: "user.name"
  */
 Watcher.prototype.initDeps = function (path) {
     this.addDep(path);
-    Observer.emitGet = true;
-    this.vm._activeWatcher = this;
-    this.value = this.getter.call(this.vm, this.vm.$data);
-    Observer.emitGet = false;
-    this.vm._activeWatcher = null;
+    this.value = this.get();
 };
 
 /**
@@ -79,6 +71,51 @@ Watcher.prototype.addDep = function (path) {
 Watcher.prototype.update = function () {
     // this.cb.call(this.ctx, arguments);
     batcher.push(this);
+};
+
+/**
+ * 在调用属性的getter前调用
+ * 作用是打开某些开关
+ */
+Watcher.prototype.beforeGet = function () {
+    Observer.emitGet = true;
+    this.vm._activeWatcher = this;
+};
+
+/**
+ * getter.call是完成计算属性的核心,
+ * 因为正是这里的getter.call, 执行了该计算属性的getter方法,
+ * 从而执行该计算属性所依赖的原始原型的get方法
+ * 从而发出get事件,冒泡到底层, 触发collectDep事件
+ */
+Watcher.prototype.get = function () {
+    this.beforeGet();
+    let value = this.getter.call(this.vm, this.vm.$data);
+    this.afterGet();
+    return value;
+};
+
+/**
+ * 在调用属性的getter之后调用
+ * 作用是关闭某些开关
+ */
+Watcher.prototype.afterGet = function () {
+    Observer.emitGet = false;
+    this.vm._activeWatcher = null;
+};
+
+/**
+ * 为Watcher添加一个run方法, 此方法调用回调函数
+ * 之前是直接在bathcer的flush函数里面调用cb
+ * 但是这样传递参数的问题不好处理
+ * 所以为了将属性变化前后的值传递给cb
+ * 弄一个run函数更好一些
+ */
+Watcher.prototype.run = function () {
+    let value = this.get();
+    let oldValue = this.value;
+    this.value = value;
+    this.cb.call(this.ctx, value, oldValue);
 };
 
 module.exports = Watcher;

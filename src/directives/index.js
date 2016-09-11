@@ -3,5 +3,6 @@
  */
 
 module.exports = {
-    text: require('./text')
+    text: require('./text'),
+    if: require('./if')
 };

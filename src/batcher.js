@@ -41,7 +41,8 @@ Batcher.prototype.push = function (job) {
  */
 Batcher.prototype.flush = function () {
     this.queue.forEach((job) => {
-        job.cb.call(job.ctx);
+        // job.cb.call(job.ctx);
+        job.run();
     });
     this.reset();
 };

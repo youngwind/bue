@@ -10,10 +10,13 @@ import _ from '../util';
  * @private
  */
 exports._initElement = function (el) {
-    if (typeof el !== 'string') return;
-    let selector = el;
-    this.$el = el = document.querySelector(el);
-    if (!el) {
-        _.warn(`Cannot find element: ${selector}`);
+    if (typeof el === 'string') {
+        let selector = el;
+        this.$el = el = document.querySelector(el);
+        if (!el) {
+            _.warn(`Cannot find element: ${selector}`);
+        }
+    } else {
+        this.$el = el;
     }
 };

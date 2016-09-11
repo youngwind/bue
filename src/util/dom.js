@@ -2,6 +2,8 @@
  * Created by youngwind on 16/9/6.
  */
 
+import config from '../config';
+
 /**
  * insertBefore
  * @param el {Element}
@@ -12,9 +14,38 @@ exports.before = function (el, target) {
 };
 
 /**
+ * 因为没有原声的insertAfter方法, 所以需要迂回处理一下
+ * @param el
+ * @param target
+ */
+exports.after = function (el, target) {
+    if (target.nextSibling) {
+        exports.before(el, target.nextSibling);
+    } else {
+        target.parentNode.appendChild(el);
+    }
+};
+
+/**
  * removeSelf
  * @param el {Element}
  */
 exports.remove = function (el) {
     el.parentNode.removeChild(el);
+};
+
+/**
+ * 把node节点的attr取出来(并且移除该attr)
+ * 注意! 这里会把该attr移除! 专门用来处理v-if这样的属性
+ * @param node {Element}
+ * @param attr {String}
+ * @returns {string}
+ */
+exports.attr = function (node, attr) {
+    attr = config.prefix + attr;
+    let val = node.getAttribute(attr);
+    if (val) {
+        node.removeAttribute(attr);
+    }
+    return val;
 };

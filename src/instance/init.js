@@ -23,7 +23,7 @@ exports._init = function (options) {
     this.$data = options.data || {};
 
     // 初始化data, 主要是做Observer,数据监听这一块
-    this._initData(options.data);
+    this._initData(this.$data);
 
     // 初始化计算属性
     this._initComputed();
