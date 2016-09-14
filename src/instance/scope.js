@@ -10,7 +10,11 @@ import Observer from '../observer/observer';
  * @private
  */
 exports._initData = function (data) {
-    this.observer = Observer.create(data);
+    if (this.$parent) {
+        this.observer = this.$parent.observer;
+    } else {
+        this.observer = Observer.create(data);
+    }
 };
 
 /**

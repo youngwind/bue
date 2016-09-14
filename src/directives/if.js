@@ -49,6 +49,7 @@ exports.update = function (value) {
  */
 exports.build = function () {
     this.childBM = new _.Bue({
-        el: this.el
+        el: this.el,
+        parent: this.vm
     });
 };

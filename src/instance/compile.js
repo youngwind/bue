@@ -100,11 +100,12 @@ exports._bindDirective = function (name, value, node) {
  * @private
  */
 exports._checkPriorityDirs = function (node) {
-    priorityDirs.forEach((dir) => {
+    for (let i = 0, length = priorityDirs.length; i < length; i++) {
+        let dir = priorityDirs[i];
         let value = _.attr(node, dir);
         if (value) {
             this._bindDirective(dir, value, node);
             return true;
         }
-    });
+    }
 };

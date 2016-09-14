@@ -11,7 +11,8 @@ const app = new Bue({
         user: {
             name: 'youngwind',
             age: 24
-        }
+        },
+        sub_show: true
     },
     computed: {
         info: function () {

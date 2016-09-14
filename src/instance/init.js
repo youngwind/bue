@@ -14,13 +14,19 @@ exports._init = function (options) {
     // 这个变量是用来存储遍历DOM过程中生成的当前的Watcher
     // 在实现computed功能的时候需要用到
     this._activeWatcher = null;
-
     this.$options = options;
+    this.$parent = options.parent;
+    this.$children = [];
 
     // Bue构造函数上定义了一些指令相关的方法,需要将它们引用过来, 以供后面的调用
     _.extend(this.$options, this.constructor.options);
 
-    this.$data = options.data || {};
+    if (this.$parent) {
+        this.$parent.$children.push(this);
+        this.$data = options.parent.$data;
+    } else {
+        this.$data = options.data || {};
+    }
 
     // 初始化data, 主要是做Observer,数据监听这一块
     this._initData(this.$data);

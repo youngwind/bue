@@ -17,6 +17,7 @@ exports._updateBindingAt = function () {
     pathAry.forEach((key) => {
         r = r[key];
     });
+    if (!r) return;
     let subs = r._subs;
     subs.forEach((watcher) => {
         watcher.cb();
@@ -29,6 +30,7 @@ exports._updateBindingAt = function () {
  */
 exports._initBindings = function () {
     this._rootBinding = new Binding();
+
     this.observer.on('set', this._updateBindingAt.bind(this))
         .on('get', this._collectDep.bind(this));
 };
