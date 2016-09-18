@@ -9,7 +9,7 @@
 <div id="app">
     <p data-name="{{user.name}}">姓名:{{user.name}}</p>
     <p>年龄:{{user.age}}</p>
-    <p>{{info}}</p>
+    <p class="{{user.name}}">{{info}}</p>
     <button b-on="click:submit">提交</button>
     <div b-if="show">
         <h1>如果show为真,我们就显示{{user.name}}</h1>
