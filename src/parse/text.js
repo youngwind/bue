@@ -2,16 +2,17 @@
  * Created by youngwind on 16/9/6.
  */
 
+const tagRE = /\{?\{\{(.+?)\}\}\}?/g;
+
 /**
- * 将文本节点如"{{user.name}}1111",解析成["{{user.name}}","1111"]两个节点
+ * 将文本节点如"{{user.name}}1111",解析成["user.name","1111"]两个节点
  * @param text {String} 例如 "{{user.name}}1111"
  */
 exports.parse = function (text) {
-    if (text.trim() === '') return false;
-
+    if (text.trim() === '' || !tagRE.test(text)) return null;
     let tokens = [],
-        tagRE = /\{?\{\{(.+?)\}\}\}?/g,
         match, index, value, lastIndex = 0;
+    tagRE.lastIndex = 0;
     while (match = tagRE.exec(text)) {
         index = match.index;
         if (index > lastIndex) {

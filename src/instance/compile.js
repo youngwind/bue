@@ -5,6 +5,7 @@ import Directive from '../directive';
 import textParser from '../parse/text';
 import dirParser from '../parse/directive';
 import _ from '../util';
+import config from '../config';
 
 const priorityDirs = [
     'if'
@@ -26,8 +27,14 @@ exports._compile = function () {
 exports._compileElement = function (node) {
     let hasAttributes = node.hasAttributes();
 
+    // 解析高优指令
     if (hasAttributes && this._checkPriorityDirs(node)) {
         return;
+    }
+
+    // 解析属性
+    if (hasAttributes) {
+        this._compileAttrs(node);
     }
 
     if (node.hasChildNodes()) {
@@ -108,4 +115,35 @@ exports._checkPriorityDirs = function (node) {
             return true;
         }
     }
+};
+
+/**
+ * 循环解析属性(包括特殊属性和普通属性)
+ * @param node {Element}
+ * @private
+ */
+exports._compileAttrs = function (node) {
+    let attrs = Array.from(node.attributes);
+    attrs.forEach((attr) => {
+        let attrName = attr.name;
+        if (attrName.indexOf(config.prefix) === 0) {
+            // 特殊属性
+        } else {
+            // 普通属性
+            this._bindAttr(node, attr);
+        }
+    });
+};
+
+/**
+ *
+ * @param node {Element}
+ * @param attr {Object} 如 {name:"data-id", id:"app"}
+ * @private
+ */
+exports._bindAttr = function (node, attr) {
+    let {name, value} = attr;
+    let tokens = textParser.parse(value);
+    if (!tokens) return;
+    this._bindDirective('attr', `${name}:${tokens[0].value}`, node);
 };

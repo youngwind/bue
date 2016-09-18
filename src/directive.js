@@ -18,7 +18,7 @@ function Directive(name, el, vm, descriptor) {
     this.el = el;
     this.vm = vm;
     this.expression = descriptor.expression;
-    this.attr = 'nodeValue';
+    this.arg = descriptor.arg;
     this._initDef();
     this._bind();
 }
