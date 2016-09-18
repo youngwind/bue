@@ -5,5 +5,6 @@
 module.exports = {
     text: require('./text'),
     if: require('./if'),
-    attr: require('./attr')
+    attr: require('./attr'),
+    on: require('./on')
 };

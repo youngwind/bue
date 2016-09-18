@@ -34,6 +34,12 @@ exports._init = function (options) {
     // 初始化计算属性
     this._initComputed();
 
+    // 初始化数据代理
+    this._initProxy();
+
+    // 初始化方法
+    this._initMethods();
+
     // binding、watcher、directive是实现动态数据绑定的三大核心对象
     this._initBindings();
 

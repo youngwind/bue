@@ -124,12 +124,17 @@ exports._checkPriorityDirs = function (node) {
  */
 exports._compileAttrs = function (node) {
     let attrs = Array.from(node.attributes);
+    let registry = this.$options.directives;
     attrs.forEach((attr) => {
         let attrName = attr.name;
+        let attrValue = attr.value;
         if (attrName.indexOf(config.prefix) === 0) {
-            // 特殊属性
+            // 特殊属性 如: v-on:"submit"
+            let dirName = attrName.slice(config.prefix.length);
+            if (!registry[dirName]) return;
+            this._bindDirective(dirName, attrValue, node);
         } else {
-            // 普通属性
+            // 普通属性 如: data-id="{{user.id}}"
             this._bindAttr(node, attr);
         }
     });
