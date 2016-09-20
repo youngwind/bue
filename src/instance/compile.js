@@ -8,7 +8,8 @@ import _ from '../util';
 import config from '../config';
 
 const priorityDirs = [
-    'if'
+    'if',
+    'repeat'
 ];
 
 /**

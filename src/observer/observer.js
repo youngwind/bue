@@ -173,7 +173,14 @@ Observer.prototype.notify = function (event, path, val) {
     if (!parent) return;
     let ob = parent.ob;
     let key = parent.key;
-    let parentPath = `${key}.${path}`;
+    let parentPath;
+
+    // 此处为为了兼容数组的情况
+    if (path) {
+        parentPath = `${key}.${path}`;
+    } else {
+        parentPath = key;
+    }
     ob.notify(event, parentPath, val);
 };
 

@@ -35,6 +35,17 @@ exports.remove = function (el) {
 };
 
 /**
+ * 用新的节点代替旧的节点
+ * @param target {Element} 旧节点
+ * @param el {Element} 新节点
+ */
+exports.replace = function (target, el) {
+    let parent = target.parentNode;
+    parent.insertBefore(el, target);
+    parent.removeChild(target);
+};
+
+/**
  * 把node节点的attr取出来(并且移除该attr)
  * 注意! 这里会把该attr移除! 专门用来处理v-if这样的属性
  * @param node {Element}

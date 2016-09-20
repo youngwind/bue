@@ -12,7 +12,21 @@ const app = new Bue({
             name: 'youngwind',
             age: 24
         },
-        sub_show: true
+        sub_show: true,
+        list: {
+            items: [
+                {
+                    title: "aaa"
+                },
+                {
+                    title: "bbb"
+                },
+                {
+                    title: "ccc"
+                }
+            ]
+        }
+
     },
     computed: {
         info: function () {
@@ -26,9 +40,9 @@ const app = new Bue({
     }
 });
 
-// app.$watch('user.name', function () {
-//     console.log('watch住了user.name');
-// });
+app.$watch('user.name', function () {
+    console.log('watch住了user.name');
+});
 
 
 window.app = app;

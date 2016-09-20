@@ -9,8 +9,20 @@ const arrayAugmentations = [];
 aryMethods.forEach((method) => {
     let original = Array.prototype[method];
     arrayAugmentations[method] = function () {
-        console.log('我被改变啦!');
-        return original.apply(this, arguments);
+        let result = original.apply(this, arguments);
+        let ob = this.$observer;
+        let removed, index;
+        switch (method) {
+            case 'push':
+                break;
+            case 'pop':
+                removed = [result];
+                index = this.length;
+                break;
+            default:
+                return;
+        }
+        ob.notify('set', null, this.length);
     };
 });
 

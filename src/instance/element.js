@@ -19,4 +19,5 @@ exports._initElement = function (el) {
     } else {
         this.$el = el;
     }
+    this.$el.__vue__ = this;
 };

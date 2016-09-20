@@ -14,10 +14,11 @@ exports._updateBindingAt = function () {
     let path = arguments[1];
     let pathAry = path.split('.');
     let r = this._rootBinding;
-    pathAry.forEach((key) => {
+    for (let i = 0, l = pathAry.length; i < l; i++) {
+        let key = pathAry[i];
         r = r[key];
-    });
-    if (!r) return;
+        if (!r) return;
+    }
     let subs = r._subs;
     subs.forEach((watcher) => {
         watcher.cb();
