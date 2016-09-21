@@ -36,6 +36,12 @@ const app = new Bue({
     methods: {
         submit: function () {
             console.log('提交');
+        },
+        test: function () {
+            this.list.items.pop();
+            this.list.items.push({
+                title: 'ddd'
+            });
         }
     }
 });
