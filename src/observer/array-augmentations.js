@@ -11,18 +11,8 @@ aryMethods.forEach((method) => {
     arrayAugmentations[method] = function () {
         let result = original.apply(this, arguments);
         let ob = this.$observer;
-        let removed, index;
-        switch (method) {
-            case 'push':
-                break;
-            case 'pop':
-                removed = [result];
-                index = this.length;
-                break;
-            default:
-                return;
-        }
         ob.notify('set', null, this.length);
+        return result;
     };
 });
 

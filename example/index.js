@@ -16,13 +16,13 @@ const app = new Bue({
         list: {
             items: [
                 {
-                    title: "aaa"
+                    title: 'aaa'
                 },
                 {
-                    title: "bbb"
+                    title: 'bbb'
                 },
                 {
-                    title: "ccc"
+                    title: 'ccc'
                 }
             ]
         }
@@ -43,7 +43,6 @@ const app = new Bue({
 app.$watch('user.name', function () {
     console.log('watch住了user.name');
 });
-
 
 window.app = app;
 
