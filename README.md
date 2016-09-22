@@ -10,6 +10,11 @@
 - [x] 计算属性computed
 - [x] v-if条件渲染
 - [x] v-on事件绑定
+- [ ] v-repeat列表渲染
+- [ ] v-model双向数据绑定
+- [ ] css、class、transition
+- [ ] Cache系统
+- [ ] 生命周期(面向切面编程)
 
 # 如何启动
 ```

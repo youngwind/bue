@@ -79,7 +79,7 @@ exports.diff = function (data, oldVms) {
                     vm.$before(targetNext.$el);
                 }
             } else {
-                vm.$before(targetNext);
+                vm.$before(targetNext.$el);
             }
         }
     }
