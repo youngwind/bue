@@ -7,6 +7,9 @@ import Bue from '../src/index';
 const app = new Bue({
     el: '#app',
     data: {
+        message: {
+            name: ''
+        },
         show: true,
         user: {
             name: 'youngwind',

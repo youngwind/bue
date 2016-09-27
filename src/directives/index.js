@@ -7,5 +7,6 @@ module.exports = {
     if: require('./if'),
     attr: require('./attr'),
     on: require('./on'),
-    repeat: require('./repeat')
+    repeat: require('./repeat'),
+    model: require('./model')
 };

@@ -60,3 +60,13 @@ exports.attr = function (node, attr) {
     }
     return val;
 };
+
+/**
+ * 事件绑定
+ * @param el {Element}
+ * @param event {String} 比如:'click'
+ * @param cb {Function} 事件函数
+ */
+exports.on = function (el, event, cb) {
+    el.addEventListener(event, cb);
+};
