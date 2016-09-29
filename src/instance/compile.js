@@ -6,6 +6,7 @@ import textParser from '../parse/text';
 import dirParser from '../parse/directive';
 import _ from '../util';
 import config from '../config';
+import transclude from '../compiler/transclude';
 
 const priorityDirs = [
     'if',
@@ -17,6 +18,8 @@ const priorityDirs = [
  */
 
 exports._compile = function () {
+    this.$el = transclude(this.$el, this.$options);
+
     this._compileNode(this.$el);
 };
 
@@ -26,6 +29,11 @@ exports._compile = function () {
  * @private
  */
 exports._compileElement = function (node) {
+    // 判断节点是否是组件指令
+    if (this._checkComponentDirs(node)) {
+        return;
+    }
+
     let hasAttributes = node.hasAttributes();
 
     // 解析高优指令
@@ -115,6 +123,26 @@ exports._checkPriorityDirs = function (node) {
             this._bindDirective(dir, value, node);
             return true;
         }
+    }
+};
+
+/**
+ * 判断节点是否是组件指令,如 <my-component></my-component>
+ * 如果是,则构建组件指令
+ * @param node {Element}
+ * @returns {boolean}
+ * @private
+ */
+exports._checkComponentDirs = function (node) {
+    let tagName = node.tagName.toLowerCase();
+    if (this.$options.components[tagName]) {
+        let dirs = this._directives;
+        dirs.push(
+            new Directive('component', node, this, {
+                expression: tagName
+            })
+        );
+        return true;
     }
 };
 

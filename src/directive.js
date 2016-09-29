@@ -35,14 +35,19 @@ Directive.prototype._bind = function () {
 
     this.bind && this.bind();
 
-    this._watcher = new Watcher(
-        this.vm,
-        this.expression,
-        this._update,  // 回调函数,目前是唯一的,就是更新DOM
-        this           // 上下文
-    );
-
-    this.update(this._watcher.value);
+    if (this.name === 'component') {
+        // 组件指令走这边
+        this.update && this.update();
+    } else {
+        // 非组件指令走这边
+        this._watcher = new Watcher(
+            this.vm,
+            this.expression,
+            this._update,  // 回调函数,目前是唯一的,就是更新DOM
+            this           // 上下文
+        );
+        this.update(this._watcher.value);
+    }
 };
 
 /**

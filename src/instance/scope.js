@@ -15,6 +15,22 @@ exports._initData = function (data) {
 };
 
 /**
+ * 初始化组件的props,将props解析并且填充到$data中去
+ * @private
+ */
+exports._initProps = function () {
+    let isComponent = this.$options.isComponent;
+    if (!isComponent) return;
+    let el = this.$options.el;
+    let attrs = Array.from(el.attributes);
+    attrs.forEach((attr) => {
+        let attrName = attr.name;
+        let attrValue = attr.value;
+        this.$data[attrName] = attrValue;
+    });
+};
+
+/**
  * 初始化所有计算属性
  * 主要完成一个功能:将计算属性定义的function当成是该属性的getter函数
  * @private

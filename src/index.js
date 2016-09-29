@@ -4,6 +4,7 @@
  */
 
 import _ from './util';
+import installGlobalAPI from './global-api';
 
 function Bue(options) {
     this._init(options);
@@ -22,7 +23,10 @@ Bue.prototype = {
 };
 
 Bue.options = {
-    directives: {...require('./directives')}
+    directives: {...require('./directives')},
+    components: {}
 };
 
-module.exports = _.Bue = Bue;
+installGlobalAPI(Bue);
+
+module.exports = window.Bue = _.Bue = Bue;

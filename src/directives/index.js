@@ -8,5 +8,6 @@ module.exports = {
     attr: require('./attr'),
     on: require('./on'),
     repeat: require('./repeat'),
-    model: require('./model')
+    model: require('./model'),
+    component: require('./component')
 };
