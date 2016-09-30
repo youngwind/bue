@@ -23,6 +23,10 @@ module.exports = function (Bue) {
 
     /**
      * 构造组件构造函数本身
+     * 为什么不能直接定义BueComponent,而要每声明一个组件,都new一个构造函数呢?
+     * 因为在extend函数中,我们把options当做BueComponent的自定义属性,
+     * 那么就意味着如果我们一直使用同一个构造函数的话, 那么所有组件最终的options都会是一样的
+     * 这显然不妥
      * @returns {Function}
      */
     function createClass() {

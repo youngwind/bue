@@ -11,10 +11,7 @@ var MyComponent = Bue.extend({
 Bue.component('my-component', MyComponent);
 
 const app = new Bue({
-    el: '#app',
-    data: {
-        message: 'hello'
-    }
+    el: '#app'
 });
 
 window.app = app;

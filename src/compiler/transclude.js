@@ -13,11 +13,11 @@ module.exports = function (el, options) {
     let tpl = options.template;
     if (tpl) {
         var parser = new DOMParser();
-        var doc = parser.parseFromString(tpl, 'application/xml');
-        // 此处生成的doc是一个fragment, 不能直接返回处理
-        // 目前只处理了template有唯一根节点的情况, 所以返回firstChild
-        // 对于DOM片段的情况, 暂未处理
-        return doc.firstChild;
+        var doc = parser.parseFromString(tpl, 'text/html');
+        // 此处生成的doc是一个包含html和body标签的HTMLDocument
+        // 想要的DOM结构被包在body标签里面
+        // 所以需要进去body标签找出来
+        return doc.querySelector('body').firstChild;
     } else {
         return el;
     }
