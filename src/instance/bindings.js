@@ -46,6 +46,7 @@ exports._updateSelfBindingAt = function (event, path) {
 exports._updateChildrenBindingAt = function () {
     if (!this.$children.length) return;
     this.$children.forEach((child) => {
+        if (child.$options.isComponent) return;
         child._updateBindingAt(...arguments);
     });
 };

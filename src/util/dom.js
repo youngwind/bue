@@ -70,3 +70,28 @@ exports.attr = function (node, attr) {
 exports.on = function (el, event, cb) {
     el.addEventListener(event, cb);
 };
+
+/**
+ * 获取动态数据绑定属性值,
+ * 比如 b-bind:name="user.name" 和 :name="user.name"
+ * @param node {Element}
+ * @param name {String} 属性名称 比如"name"
+ * @returns {string} 属性值
+ */
+exports.getBindAttr = function (node, name) {
+    return exports.getAttr(node, `:${name}`) || exports.getAttr(node, `${config.prefix}bind:${name}`);
+};
+
+/**
+ * 获取节点属性值,并且移除该属性
+ * @param node {Element}
+ * @param attr {String}
+ * @returns {string}
+ */
+exports.getAttr = function (node, attr) {
+    let val = node.getAttribute(attr);
+    if (val) {
+        node.removeAttribute(attr);
+    }
+    return val;
+};

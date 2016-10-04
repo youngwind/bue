@@ -19,7 +19,8 @@ Bue.prototype = {
     ...require('./instance/scope'),
     ...require('./api/lifecycle'),
     ...require('./api/data'),
-    ...require('./api/dom')
+    ...require('./api/dom'),
+    ...require('./compiler/compile-props')
 };
 
 Bue.options = {

@@ -9,5 +9,6 @@ module.exports = {
     on: require('./on'),
     repeat: require('./repeat'),
     model: require('./model'),
-    component: require('./component')
+    component: require('./component'),
+    prop: require('./prop')
 };

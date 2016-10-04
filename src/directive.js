@@ -41,7 +41,10 @@ Directive.prototype._bind = function () {
     } else {
         // 非组件指令走这边
         this._watcher = new Watcher(
-            this.vm,
+            // 这里上下文非常关键
+            // 如果是普通的非组件指令, 上下文是vm本身
+            // 但是如果是prop指令, 那么上下文应该是该组件的父实例
+            (this.name === 'prop' ? this.vm.$parent : this.vm),
             this.expression,
             this._update,  // 回调函数,目前是唯一的,就是更新DOM
             this           // 上下文

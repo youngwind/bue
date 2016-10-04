@@ -69,8 +69,19 @@ Watcher.prototype.addDep = function (path) {
  * 就是这么的。。复杂。。
  */
 Watcher.prototype.update = function () {
-    // this.cb.call(this.ctx, arguments);
-    batcher.push(this);
+    // 这里需要加isFlushing的判断
+    // 为什么要这样做呢?
+    // 因为在实现组件化的时候发现, 会出现多重异步队列的问题
+    // 也就是,执行的异步队列中某些任务会产生新的异步操作
+    // 所以,现在的处理是, 如果在正在执行异步队列的过程中产生了新的异步任务
+    // 那么将添加异步任务本身做成是异步操作
+    if (!batcher.isFlushing) {
+        batcher.push(this);
+    } else {
+        setTimeout(() => {
+            batcher.push(this);
+        });
+    }
 };
 
 /**
