@@ -85,6 +85,10 @@ exports._compileNode = function (node) {
             break;
         // node
         case 3 :
+            //如果是空白节点则不做处理
+            if(/^\s+$/.test(node.nodeValue)){
+               return;
+            }
             this._compileTextNode(node);
             break;
         default:
