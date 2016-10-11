@@ -17,6 +17,7 @@ exports._init = function (options) {
     this.$options = options;
     this.$parent = options.parent;
     this.$children = [];
+    this._events = {};
 
     if (!this.$options.isComponent) {
         this.__proto__ = this.$parent; // eslint-disable-line
@@ -43,6 +44,8 @@ exports._init = function (options) {
 
     // 初始化数据代理
     this._initProxy();
+    // 初始化事件
+    this._initEvents();
 
     // 初始化方法
     this._initMethods();

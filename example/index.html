@@ -4,12 +4,70 @@
     <meta charset="UTF-8">
     <title>测试Bue</title>
 </head>
-<body>
+<style>
+    #app,
+    #child,
+    #recursive-child {
+        border: 1px solid #999;
+        margin: 10px;
+        padding: 5px;
+    }
 
+    #child {
+        border-color: #3a33d1;
+    }
+
+    #recursive-child {
+        border-color: #f0ad4e;
+    }
+</style>
+<body>
 <div id="app">
-    <my-component :name="user.name1" message="近况如何?"></my-component>
-    <my-component :name="user.name2" message="How are you?"></my-component>
+    <p>最顶层的实例</p>
+    <p>姓名: {{name}}</p>
+    <p>年龄: {{age}}</p>
+    <div>
+        <input type="text" b-model="name">
+        <button b-on="click:broadcastName">向下广播姓名</button>
+    </div>
+    <div>
+        <input type="text" b-model="age">
+        <button b-on="click:broadcastAge">向下传播年龄</button>
+    </div>
+
+    <child></child>
 </div>
+
+<template id="child-template">
+    <div id="child">
+        <p>第二层的子组件</p>
+        <p>姓名: {{name}}</p>
+        <p>年龄: {{age}}</p>
+        <div>
+            <input type="text" b-model="name">
+            <button b-on="click:dispatchName">向上派发姓名</button>
+            <button b-on="click:broadcastName">向下广播姓名</button>
+        </div>
+
+        <recursive-child></recursive-child>
+    </div>
+</template>
+
+<template id="recursive-child-template">
+    <div id="recursive-child">
+        <p>最三层的子组件</p>
+        <p>姓名: {{name}}</p>
+        <p>年龄: {{age}}</p>
+        <div>
+            <input type="text" b-model="name">
+            <button b-on="click:dispatchName">向上派发姓名</button>
+        </div>
+        <div>
+            <input type="text" b-model="age">
+            <button b-on="click:dispatchAge">向上派发年龄</button>
+        </div>
+    </div>
+</template>
 
 <script src="./example.js"></script>
 </body>

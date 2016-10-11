@@ -11,14 +11,21 @@
  */
 module.exports = function (el, options) {
     let tpl = options.template;
-    if (tpl) {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(tpl, 'text/html');
-        // 此处生成的doc是一个包含html和body标签的HTMLDocument
-        // 想要的DOM结构被包在body标签里面
-        // 所以需要进去body标签找出来
-        return doc.querySelector('body').firstChild;
-    } else {
+
+    if (!tpl) {
         return el;
     }
+
+    // 处理tpl是一个selector的情况, 比如tpl='#child-template'
+    let ret = document.querySelector(options.template);
+    if (ret) {
+        return ret.content.children[0];
+    }
+
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(tpl, 'text/html');
+    // 此处生成的doc是一个包含html和body标签的HTMLDocument
+    // 想要的DOM结构被包在body标签里面
+    // 所以需要进去body标签找出来
+    return doc.querySelector('body').firstChild;
 };
