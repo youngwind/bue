@@ -69,13 +69,13 @@ exports.diff = function (data, oldVms) {
         let targetNext = vms[i + 1];
         if (!targetNext) {
             // 这是最后的一个实例
-            vm.$before(ref);
+            if (!vm._reused) vm.$before(ref);
         } else {
             if (vm._reused) {
                 // 可复用实例
                 // 如果当前的下一个兄弟节点不是目标顺序中的兄弟节点
                 // 那么重新移动排序
-                if (targetNext !== vm.$el.nextSibling) {
+                if (targetNext.$el !== vm.$el.nextSibling) {
                     vm.$before(targetNext.$el);
                 }
             } else {
@@ -83,6 +83,12 @@ exports.diff = function (data, oldVms) {
             }
         }
     }
+
+    vms.forEach((vm) => {
+        vm._reused = false;
+    })
+
+    return vms;
 };
 
 /**
